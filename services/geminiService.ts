@@ -6,9 +6,14 @@ let aiInstance: GoogleGenAI | null = null;
 
 const getAI = () => {
   if (!aiInstance) {
-    // Com o define do Vite, process.env vira {}, então isso é seguro.
-    // O valor virá undefined se não houver replace, mas o código não crasha.
-    const apiKey = process.env.API_KEY || ''; 
+    // Tenta pegar do ambiente do Vite (import.meta.env) ou fallback para process.env
+    // Nota: Em produção, você deve configurar a variável VITE_API_KEY no seu .env ou painel da Hostinger
+    // e usar import.meta.env.VITE_API_KEY
+    const apiKey = (import.meta.env && import.meta.env.VITE_API_KEY) || 
+                   (typeof process !== 'undefined' && process.env && process.env.API_KEY) || 
+                   ''; 
+    
+    // Se não tiver chave, o app não quebra, apenas a IA falha ao tentar executar
     aiInstance = new GoogleGenAI({ apiKey });
   }
   return aiInstance;
@@ -31,7 +36,7 @@ export const analyzeMessageWithAI = async (message: string): Promise<string> => 
     return response.text || "Não foi possível analisar no momento.";
   } catch (error) {
     console.error("Erro na análise:", error);
-    return "Erro de conexão com o servidor neural. Verifique sua chave de API ou tente novamente.";
+    return "Erro de conexão com o servidor neural. Verifique a configuração da API Key.";
   }
 };
 

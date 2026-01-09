@@ -4,18 +4,22 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  // Isto é CRUCIAL. O navegador não tem "process.env".
+  // Substituímos por um objeto vazio para o código não travar.
   define: {
-    // Substitui 'process.env' pelo objeto stringificado '{}'.
-    // Isso evita o erro "Uncaught ReferenceError: process is not defined"
-    // de forma segura e robusta durante o build.
-    'process.env': '{}'
+    'process.env': {}
   },
+  base: './', // Garante que os caminhos dos arquivos funcionem na Hostinger
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    assetsDir: 'assets',
+    sourcemap: false,
     rollupOptions: {
-      input: {
-        main: './index.html'
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', '@google/genai']
+        }
       }
     }
   },
