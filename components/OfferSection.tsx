@@ -17,7 +17,7 @@ const OfferSection: React.FC<OfferSectionProps> = ({ onCheckout }) => {
         <div className="flex flex-col items-center gap-2 mb-10">
           <span className="text-zinc-600 line-through text-lg font-bold">R$ 197,00</span>
           <div className="flex items-center gap-2">
-            <span className="text-5xl md:text-7xl font-black text-white tracking-tighter">R$ 47,00</span>
+            <span className="text-5xl md:text-7xl font-black text-white tracking-tighter">R$ 47,90</span>
           </div>
         </div>
 

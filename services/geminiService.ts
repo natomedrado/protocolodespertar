@@ -6,10 +6,9 @@ let aiInstance: GoogleGenAI | null = null;
 
 const getAI = () => {
   if (!aiInstance) {
-    // Garante que o app não quebre se process.env não estiver definido no navegador
-    const apiKey = typeof process !== 'undefined' && process.env && process.env.API_KEY 
-      ? process.env.API_KEY 
-      : '';
+    // Com o define do Vite, process.env vira {}, então isso é seguro.
+    // O valor virá undefined se não houver replace, mas o código não crasha.
+    const apiKey = process.env.API_KEY || ''; 
     aiInstance = new GoogleGenAI({ apiKey });
   }
   return aiInstance;
